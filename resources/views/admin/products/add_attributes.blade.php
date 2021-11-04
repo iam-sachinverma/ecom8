@@ -152,16 +152,16 @@
                     <td>{{ $attribute['sku'] }}</td>
                     <td>{{ $attribute['size'] }}</td>
                     <td>
-                      <input type="number" name="weight[]" value="{{ $attribute['weight'] }}" required="" style="width: 90px;">
+                      <input type="number" min="1" name="weight[]" value="{{ $attribute['weight'] }}" required="" style="width: 90px;">
                     </td>
                     <td>
-                      <input type="number" name="price[]" value="{{ $attribute['price'] }}" required="" style="width: 90px;">
+                      <input type="number" min="1" name="price[]" value="{{ $attribute['price'] }}" required="" style="width: 90px;">
                     </td>
                     <td>
-                      <input type="number" name="discount[]" value="{{ $attribute['discount'] }}" required="" style="width: 90px;">
+                      <input type="number" min="0" name="discount[]" value="{{ $attribute['discount'] }}" required="" style="width: 90px;">
                     </td>
                     <td>
-                      <input type="number" name="stock[]" value="{{ $attribute['stock'] }}" required="" style="width: 90px;">
+                      <input type="number" min="0" name="stock[]" value="{{ $attribute['stock'] }}" required="" style="width: 90px;">
                     </td>
                     <td>
                       <a title="Delete Product Attribute" href="javascript:void(0)" class="confirmDelete" record="attribute" recordid="{{ $attribute['id'] }}"><i class="fas fa-trash-alt"></i></a>

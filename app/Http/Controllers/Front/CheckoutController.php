@@ -77,7 +77,7 @@ class CheckoutController extends Controller
         $total_weight = 0;
         foreach ($userCartItems as $item){
             $product_weight = $item['weight'];
-            $total_weight = $total_weight + $product_weight;
+            $total_weight = $total_weight + ($product_weight * $item['quantity']);
             $attrPrice = Product::getDiscountedAttrPrice($item['product_id'],$item['size']);
             $total_price = $total_price + ($attrPrice['final_price'] * $item['quantity']);
         }

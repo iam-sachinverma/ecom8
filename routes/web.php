@@ -93,6 +93,9 @@ Route::prefix('/admin')->namespace('App\\Http\\Controllers\\Admin')->group(funct
         Route::get('view-shipping-charges','ShippingController@viewShippingCharges');
         Route::match(['get','post'],'edit-shipping-charges/{id}','ShippingController@editShippingCharges');
         Route::post('update-shipping-status','ShippingController@updateShippingStatus');
+
+        // Users
+        Route::get('users','UsersController@users');
     }); 
 
 });

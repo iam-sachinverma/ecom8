@@ -89,7 +89,7 @@
 				</select>
 				<div class="input-group">
 					<span class="input-group-text" id="basic-addon1">QTY</span>
-					<input type="number" name="quantity" class="form-control" placeholder="Quantity" aria-label="quantity" aria-describedby="basic-addon1">
+					<input type="number" name="quantity" min="1" class="form-control" placeholder="Quantity" aria-label="quantity" aria-describedby="basic-addon1">
 				</div>
 				<br>
 				<strong>Delivery</strong>

@@ -394,7 +394,7 @@ $(document).ready(function(){
         }
         $(".shipping_charges").html("Rs."+shipping_charges);
         var grand_total = parseInt(total_price) + parseInt(shipping_charges) - parseInt(coupon_amount);
-        // alert(grand_total);
+        alert(shipping_charges);
         $(".grand_total").html("Rs."+grand_total);
     });
 
