@@ -96,6 +96,13 @@ Route::prefix('/admin')->namespace('App\\Http\\Controllers\\Admin')->group(funct
 
         // Users
         Route::get('users','UsersController@users');
+
+        // CMS Pages
+        Route::get('cms-pages','CmsController@cmspages');
+        Route::post('update-cms-page-status','CmsController@updateCmsPageStatus');
+        Route::match(['get','post'],'add-edit-cms-page/{id?}','CmsController@addEditCmsPage');
+        Route::get('delete-page/{id}','CmsController@deleteCmsPage');
+
     }); 
 
 });

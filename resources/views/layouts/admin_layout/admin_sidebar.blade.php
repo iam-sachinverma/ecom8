@@ -80,7 +80,7 @@
           </li>
          
           <!-- Catalogues -->
-          @if(Session::get('page')=="sections" || Session::get('page')=="categories" || Session::get('page')=="brands" || Session::get('page')=="products" || Session::get('page')=="banners" || Session::get('page')=="coupons" || Session::get('page')=="orders" || Session::get('page')=="shipping_charges" || Session::get('page')=="users") 
+          @if(Session::get('page')=="sections" || Session::get('page')=="categories" || Session::get('page')=="brands" || Session::get('page')=="products" || Session::get('page')=="banners" || Session::get('page')=="coupons" || Session::get('page')=="orders" || Session::get('page')=="shipping_charges" || Session::get('page')=="users" || Session::get('page')=="cms_pages" ) 
            <?php $active = "active"; ?>
           @else
            <?php $active = ""; ?>
@@ -200,6 +200,18 @@
                 <a href="{{ url('admin/users') }}" class="nav-link {{ $active }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Users</p>
+                </a>
+              </li>
+              <!-- CMS Pages -->
+              @if(Session::get('page')=="cms_pages")
+                <?php $active = "active"; ?>
+              @else
+                <?php $active = ""; ?>
+              @endif  
+              <li class="nav-item">
+                <a href="{{ url('admin/cms-pages') }}" class="nav-link {{ $active }}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>CMS Pages</p>
                 </a>
               </li>
             </ul>
