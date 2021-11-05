@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 use App\Models\Category;
+use App\Models\CmsPage;
 
 require __DIR__.'/auth.php';
 
@@ -111,10 +112,16 @@ Route::namespace('App\\Http\\Controllers\\Front')->group(function(){
     // Home Page Route
     Route::get('/','IndexController@index');
 
-    // // Listing Page Route
+    // Listing Page Route
     $catUrls = Category::select('url')->where('status',1)->get()->pluck('url')->toArray();
     foreach ($catUrls as $url) {
         Route::get('/'.$url,'ProductsController@listing');
+    }
+
+    // Cms Pages
+    $cmsUrls = CmsPage::select('url')->where('status',1)->get()->pluck('url')->toArray();
+    foreach ($cmsUrls as $url) {
+        Route::get('/'.$url,'CmsController@cmsPage');
     }
 
     // Product Detail Page
