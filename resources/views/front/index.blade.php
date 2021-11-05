@@ -4,7 +4,12 @@
 <main class="app-content">
 
     <section class="px-3 pt-1">
-        <input type="text" placeholder="Search" class="form-control bg-light">
+        <form action="{{ url('/search-products') }}" method="get">
+         <div class="input-group input-group-sm mb-2">
+          <input type="text" name="search" class="form-control" placeholder="search product" aria-label="search product" aria-describedby="search-button">
+          <button class="btn btn-outline-secondary" type="submit" id="search-button"><i class="bi bi-search"></i></button>
+         </div>
+        </form>
     </section>
 
     <!-- Catgeories  -->

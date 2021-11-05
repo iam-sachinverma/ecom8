@@ -152,6 +152,9 @@ Route::namespace('App\\Http\\Controllers\\Front')->group(function(){
     // Product Detail Page Pincode Check
     Route::post('/check-pincode','ProductsController@checkPincode');
 
+    // Search Route
+    Route::get('/search-products','ProductsController@listing');
+
     // Protected Route
     Route::group(['middleware'=>['auth']],function(){
         

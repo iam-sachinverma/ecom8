@@ -17,6 +17,7 @@
 
 <main class="app-content">
 
+@if(!isset($_REQUEST['search']))
 <section class="px-3 pt-1 pb-2 bg-light text-dark">
 	<div class="row mt-2">
 		<div class="col-8">
@@ -40,11 +41,13 @@
 		</div>
 	</div>
 </section>
+@endif
 
 <section id="filter_products" class="filter_products">
 	@include('front.products.ajax_products_listing') 
 </section>
 
+@if(!isset($_REQUEST['search']))
 <div class="pagination d-flex justify-content-center">
 	@if(isset($_GET['sort']) && !empty($_GET['sort'] ))
 	 {{ $categoryProducts->appends(['sort' => $_GET['sort'] ]); }}
@@ -52,6 +55,7 @@
 	 {{ $categoryProducts->links() }}
     @endif
 </div>
+@endif
 
 
 </main> <!-- app-content.// -->
@@ -63,7 +67,7 @@
   </div>
   <article class="offcanvas-body">
 
-    @if(isset($page_name) && $page_name == "listing")
+    @if(isset($page_name) && $page_name == "listing" && !isset($_REQUEST['search']) )
 
         <h5 class="mb-3">Cuisine</h5>
         @foreach($cuisineArray as $cuisine)
