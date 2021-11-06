@@ -26,7 +26,7 @@ class ProductsController extends Controller
         $page_name = "listing"; 
         if($request->ajax()){
             $data = $request->all();
-            echo "<pre>"; print_r($data); die;
+            // echo "<pre>"; print_r($data); die;
             $url = $data['url'];
             $categoryCount = Category::where(['url'=>$url,'status'=>1])->count();
             if($categoryCount>0){
@@ -72,9 +72,16 @@ class ProductsController extends Controller
                 } 
                 
                 $categoryProducts = $categoryProducts->paginate(15);
-                
+
+                $page_name = "listing";
+                // SEO
+                $meta_title = $categoryDetails['catDetails']['meta_title'];
+                $meta_description = $categoryDetails['catDetails']['meta_description'];
+                $meta_keywords = $categoryDetails['catDetails']['meta_keywords'];
+
                 //echo "<pre>"; print_r($categoryProducts); die;
-                return view('front.products.ajax_products_listing')->with(compact('categoryDetails','categoryProducts','url'));    
+                return view('front.products.ajax_products_listing')->with(compact('categoryDetails','categoryProducts','url',
+                 'page_name','meta_title','meta_description','meta_keywords'));    
             }else{
                 abort(404);
             }
@@ -117,13 +124,18 @@ class ProductsController extends Controller
                 $foodpreferenceArray = $productFilters['foodpreferenceArray'];
 
                 $page_name = "listing";
+                // SEO
+                $meta_title = $categoryDetails['catDetails']['meta_title'];
+                $meta_description = $categoryDetails['catDetails']['meta_description'];
+                $meta_keywords = $categoryDetails['catDetails']['meta_keywords'];
+
                 //echo "<pre>"; print_r($categoryProducts); die;
-                return view('front.products.listing')->with(compact('page_name','categoryDetails','categoryProducts','url','page_name','cuisineArray','countryArray','foodpreferenceArray'));    
+                return view('front.products.listing')->with(compact('page_name','categoryDetails','categoryProducts','url','page_name',
+                'cuisineArray','countryArray','foodpreferenceArray','meta_title','meta_description','meta_keywords'));    
             }else{
                 abort(404);
             }   
         }
-        
     }
 
     // Product DETAIL Page Note: Use parameters like Product Name or Code or any product detail in URL for SEO 
@@ -139,7 +151,14 @@ class ProductsController extends Controller
         // dd($productDetails); die;
         
         $relatedProducts = Product::with('brand')->where('category_id',$productDetails['category']['id'])->where('id','!=',$id)->where('status',1)->limit(3)->inRandomOrder()->get()->toArray();
-        return view('front.products.detail')->with(compact('page_name','productDetails','relatedProducts'));
+        
+        // SEO
+        $meta_title = $productDetails['meta_title'];
+        $meta_description = $productDetails['meta_description'];
+        $meta_keywords = $productDetails['meta_keywords'];
+
+        return view('front.products.detail')->with(compact('page_name','productDetails','relatedProducts',
+         'meta_title','meta_description','meta_keywords'));
     }
 
     public function getProductPrice(Request $request){
@@ -225,10 +244,17 @@ class ProductsController extends Controller
     // Shopping Cart
     public function cart(){
         $userCartItems = Cart::userCartItems();
+        
+        // SEO
+        $meta_title = "Best Online Gourment Food Store in India. Save Big on Gourment Food Shopping | pantryshop.in";
+        $meta_description = "apply coupons to get more discount in shopping cart";
+        $meta_keywords = "add to cart, cart, shopping bakset";
+        
         if(count($userCartItems)==0){
             return view('front.products.empty_cart');
         }else{
-            return view('front.products.cart')->with(compact('userCartItems'));
+            return view('front.products.cart')->with(compact('userCartItems','meta_title','meta_description',
+             'meta_keywords'));
         }
     }
 

@@ -18,9 +18,17 @@ class CmsController extends Controller
         $currentRoute = str_replace($domain_url."/","",$currentRoute);
         $cmsRoutes = CmsPage::where('status',1)->get()->pluck('url')->toArray();
         // dd($cmsRoutes); die;
+
         if(in_array($currentRoute,$cmsRoutes)){
             $cmsPageDetails = CmsPage::where('url',$currentRoute)->first()->toArray();
-            return view('front.pages.cms_page')->with(compact('cmsPageDetails'));
+    
+            // SEO
+            $meta_title = $cmsPageDetails['meta_title'];
+            $meta_description = $cmsPageDetails['meta_description'];
+            $meta_keywords = $cmsPageDetails['meta_keywords'];
+
+            return view('front.pages.cms_page')->with(compact('cmsPageDetails','meta_title',
+             'meta_description','meta_keywords'));
         }else{
             abort(404);
         }

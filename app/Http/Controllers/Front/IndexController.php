@@ -18,6 +18,13 @@ class IndexController extends Controller
         $newProducts = Product::with('brand')->where('status',1)->orderBy('id','Desc')->limit(5)->get()->toArray();
 
         $page_name = "index"; 
-        return view('front.index')->with(compact('page_name','featuredItems','newProducts'));
+        // SEO
+        $meta_title = "PantryShop";
+        $meta_description = "Gourment Food company deals in all types of dishes , cuisine , restaurent food";
+        $meta_keywords = "gourment food, company, ecommerce, buy, sell, dishes, pasta, noodles, food";
+
+
+        return view('front.index')->with(compact('page_name','featuredItems',
+        'newProducts','meta_title','meta_description','meta_keywords'));
     }
 }

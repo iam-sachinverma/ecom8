@@ -2,16 +2,29 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, shrink-to-fit=no">
 
-<meta name="description" content="website app template description can be written">
-<meta name="keywords" content="">
+@if(!empty($meta_title))
+    <title>{{  $meta_title }}</title>
+@else
+    <title>Best Online Gourment Food Store in India. Save Big on Gourment Food Shopping | pantryshop.in</title>
+@endif
+
+@if(!empty($meta_description))
+    <meta name="description" content="{{ $meta_description }}">
+@else
+    <meta name="description" content="All types of gourment food like pasta, soup , noodles">
+@endif    
+
+@if(!empty($meta_description))
+    <meta name="keywords" content="{{ $meta_keywords }}">
+@else
+    <meta name="keywords" content="gourment food, pasta, soup, ecommerce, shop online, "> 
+@endif
+
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, shrink-to-fit=no">
 <meta name=”theme-color” content=”#0d6efd>
 <meta name="apple-mobile-web-app-capable" content="yes"> 
-
 <meta name="csrf-token" content="{{ csrf_token() }}">
-
-<title>PantryShop</title>
 
 <link href="{{ asset('images/front_images/favicon.ico') }}" rel="shortcut icon" type="image/x-icon">
 

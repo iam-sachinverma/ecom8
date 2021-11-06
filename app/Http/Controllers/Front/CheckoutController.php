@@ -228,6 +228,9 @@ class CheckoutController extends Controller
 
         }
 
+        // SEO
+        $meta_title = "Best Online Gourment Food Store in India. Save Big on Gourment Food Shopping | pantryshop.in";
+
         return view('front.checkout.checkout')->with(compact('userCartItems','deliveryAddresses','total_price'));
     }
 
