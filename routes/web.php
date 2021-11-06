@@ -169,6 +169,9 @@ Route::namespace('App\\Http\\Controllers\\Front')->group(function(){
     // Search Route
     Route::get('/search-products','ProductsController@listing');
 
+    // Contact Us Page
+    Route::match(['GET','POST'],'/contact','CmsController@contact');    
+
     // Protected Route
     Route::group(['middleware'=>['auth']],function(){
         
