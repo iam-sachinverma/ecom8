@@ -89,6 +89,8 @@ class ProductsController extends Controller
         }else{
             $url = Route::getFacadeRoot()->current()->uri();
             $categoryCount = Category::where(['url'=>$url,'status'=>1])->count();
+            
+            // Search Product
             if(isset($_REQUEST['search']) && !empty($_REQUEST['search'])){
 
               $search_product = $_REQUEST['search'];
@@ -96,11 +98,15 @@ class ProductsController extends Controller
               $categoryDetails['catDetails']['category_name'] = $search_product;
               $categoryDetails['catDetails']['description'] = "Search results for".$search_product;
 
-              $categoryProducts = Product::with('brand')->where(function($query)use($search_product){
-                  $query->where('product_name','like','%'.$search_product.'%')
-                  ->orWhere('product_code','like','%'.$search_product.'%')
-                  ->orWhere('description','like','%'.$search_product.'%');
-                })->where('status',1);
+              $categoryProducts = Product::with('brand')
+                ->join('categories','categories.id','=','products.category_id')
+                ->select('products.*','categories.category_name') 
+                ->where(function($query)use($search_product){
+                  $query->where('products.product_name','like','%'.$search_product.'%')
+                  ->orWhere('products.product_code','like','%'.$search_product.'%')
+                  ->orWhere('products.description','like','%'.$search_product.'%')
+                  ->orWhere('categories.category_name','like','%'.$search_product.'%');
+                })->where('products.status',1);
               $categoryProducts = $categoryProducts->get();
 
               $page_name = "Search Results";
