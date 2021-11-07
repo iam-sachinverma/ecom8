@@ -182,7 +182,7 @@ class ProductsController extends Controller
            $data = $request->all();
             // echo "<pre>"; print_r($data); die;
 
-            if($data['quantity']<=0 || $data['quantity']="" ){
+            if($data['quantity']<=0 && $data['quantity']="" ){
                 $data['quantity']=1;
             }
 

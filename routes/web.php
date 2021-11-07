@@ -104,6 +104,9 @@ Route::prefix('/admin')->namespace('App\\Http\\Controllers\\Admin')->group(funct
         Route::match(['get','post'],'add-edit-cms-page/{id?}','CmsController@addEditCmsPage');
         Route::get('delete-page/{id}','CmsController@deleteCmsPage');
 
+        // Cart Settings
+        Route::match(['get','post'],'update-other-settings','CartController@UpdateOtherSettings');
+
     }); 
 
 });

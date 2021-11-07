@@ -13,6 +13,7 @@ use App\Models\OrdersProduct;
 use App\Models\Sms;
 use App\Models\ShippingCharge;
 use App\Models\ProductsAttribute;
+use App\Models\CartSetting;
 use Auth;
 use Session;
 use DB;
@@ -80,6 +81,21 @@ class CheckoutController extends Controller
             $total_weight = $total_weight + ($product_weight * $item['quantity']);
             $attrPrice = Product::getDiscountedAttrPrice($item['product_id'],$item['size']);
             $total_price = $total_price + ($attrPrice['final_price'] * $item['quantity']);
+        }
+
+        //  Get Min/Max Cart Amount
+        $otherSettings = CartSetting::where('id',1)->first()->toArray();
+
+        if($total_price<$otherSettings['min_cart_value']){
+            $error_message = "Minimum cart order of ".$otherSettings['min_cart_value'];
+            Session::put('error_message',$error_message);
+            return redirect()->back();
+        }
+
+        if($total_price>$otherSettings['max_cart_value']){
+            $error_message = "Maximum cart order of ".$otherSettings['max_cart_value'];
+            Session::put('error_message',$error_message);
+            return redirect()->back();
         }
 
         // Get Delivery Addresses
