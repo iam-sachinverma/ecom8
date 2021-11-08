@@ -11,6 +11,7 @@ class CartController extends Controller
 {
     // Cart Max and Min Value
     public function updateOtherSettings(Request $request){
+        Session::put('page','update-other-settings');
         $otherSettings = CartSetting::where('id',1)->first()->toArray();
         // dd($otherSettings); die;
         $title = "Cart Max and Min Value";

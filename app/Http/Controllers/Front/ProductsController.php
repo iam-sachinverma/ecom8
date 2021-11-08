@@ -14,6 +14,7 @@ use App\Models\Cart;
 use App\Models\User;
 use App\Models\Coupon;
 use App\Models\Order;
+use App\Models\Brand;
 use App\Models\DeliveryAddress;
 use Session;
 use Auth;
@@ -38,6 +39,12 @@ class ProductsController extends Controller
                     where('status',1);    
 
                 
+                // if Brand Filter selected
+                if(isset($data['brand']) && !empty($data['brand'])){
+                    $brandIds = Brand::select('id')->whereIn('name',$data['brand'])->pluck('id');
+                    $categoryProducts->whereIn('products.brand_id',$brandIds);
+                }
+
                 // if Cuisine Filter selected
                 if(isset($data['cuisine']) && !empty($data['cuisine'])){
                     $categoryProducts->whereIn('products.cuisine',$data['cuisine']);
@@ -123,11 +130,16 @@ class ProductsController extends Controller
     
                 $categoryProducts = $categoryProducts->paginate(15);
 
-                // Product Array
+                // Product Filter
                 $productFilters = Product::productFilters();
                 $cuisineArray = $productFilters['cuisineArray'];
                 $countryArray = $productFilters['countryArray'];
                 $foodpreferenceArray = $productFilters['foodpreferenceArray'];
+
+                // Brand Filter
+                $brandArray = Brand::select('name')->where('status',1)->pluck('name');
+
+
 
                 $page_name = "listing";
                 // SEO
@@ -137,7 +149,7 @@ class ProductsController extends Controller
 
                 //echo "<pre>"; print_r($categoryProducts); die;
                 return view('front.products.listing')->with(compact('page_name','categoryDetails','categoryProducts','url','page_name',
-                'cuisineArray','countryArray','foodpreferenceArray','meta_title','meta_description','meta_keywords'));    
+                'cuisineArray','countryArray','brandArray','foodpreferenceArray','meta_title','meta_description','meta_keywords'));    
             }else{
                 abort(404);
             }   

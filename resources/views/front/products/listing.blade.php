@@ -69,6 +69,17 @@
 
     @if(isset($page_name) && $page_name == "listing" && !isset($_REQUEST['search']) )
 
+
+        <h5 class="mb-3">Brand</h5>
+        @foreach($brandArray as $brand)
+            <label class="form-check mb-2">
+                <input class="brand form-check-input" type="checkbox" name="brand[]" id="{{ $brand }}" value="{{ $brand }}" method="post">
+                <div class="form-check-label">{{ $brand }}</div>
+            </label>
+        @endforeach
+        
+        <hr>
+
         <h5 class="mb-3">Cuisine</h5>
         @foreach($cuisineArray as $cuisine)
             <label class="form-check mb-2">

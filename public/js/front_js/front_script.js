@@ -14,6 +14,7 @@ $(document).ready(function(){
     /* Product Sort Filter */
     $("#sort").on('change',function(){
         var sort = $(this).val();
+        var brand = get_filter("brand");
         var cuisine = get_filter("cuisine");
         var country = get_filter("country");
         var foodpreference = get_filter("foodpreference");
@@ -21,7 +22,7 @@ $(document).ready(function(){
         $.ajax({
            url:url,
            method:"post",
-           data:{cuisine:cuisine,country:country,foodpreference:foodpreference,sort:sort,url:url},
+           data:{brand:brand,cuisine:cuisine,country:country,foodpreference:foodpreference,sort:sort,url:url},
            success:function(data){
                $('.filter_products').html(data);
            }
@@ -29,14 +30,35 @@ $(document).ready(function(){
     });
 
     /*  Product Filter  */
-    $(".cuisine").on('click',function(){
-        var cuisine = get_filter(this);
+    $(".brand").on('click',function(){
+        var brand = get_filter(this);
+        var cuisine = get_filter("cuisine");
+        var country = get_filter("country");
+        var foodpreference = get_filter("foodpreference");
         var sort = $("#sort option:selected").val();
         var url = $("#url").val();
            $.ajax({
             url:url,
             method:"post",
-            data:{cuisine:cuisine,sort:sort,url:url},
+            data:{brand:brand,cuisine:cuisine,country:country,foodpreference:foodpreference,sort:sort,url:url},
+            success:function(data){
+                $('.filter_products').html(data);
+            }
+        })
+    });
+
+
+    $(".cuisine").on('click',function(){
+        var cuisine = get_filter(this);
+        var brand = get_filter("brand");
+        var country = get_filter("country");
+        var foodpreference = get_filter("foodpreference");
+        var sort = $("#sort option:selected").val();
+        var url = $("#url").val();
+           $.ajax({
+            url:url,
+            method:"post",
+            data:{brand:brand,cuisine:cuisine,country:country,foodpreference:foodpreference,sort:sort,url:url},
             success:function(data){
                 $('.filter_products').html(data);
             }
@@ -45,12 +67,15 @@ $(document).ready(function(){
 
     $(".country").on('click',function(){
         var country = get_filter(this);
+        var brand = get_filter("brand");
+        var cuisine = get_filter("cuisine");
+        var foodpreference = get_filter("foodpreference");
         var sort = $("#sort option:selected").val();
         var url = $("#url").val();
            $.ajax({
             url:url,
             method:"post",
-            data:{country:country,sort:sort,url:url},
+            data:{brand:brand,cuisine:cuisine,country:country,foodpreference:foodpreference,sort:sort,url:url},
             success:function(data){
                 $('.filter_products').html(data);
             }
@@ -59,12 +84,15 @@ $(document).ready(function(){
 
     $(".foodpreference").on('click',function(){
         var foodpreference = get_filter(this);
+        var brand = get_filter("brand");
+        var cuisine = get_filter("cuisine");
+        var country = get_filter("country");
         var sort = $("#sort option:selected").val();
         var url = $("#url").val();
            $.ajax({
             url:url,
             method:"post",
-            data:{foodpreference:foodpreference,sort:sort,url:url},
+            data:{brand:brand,cuisine:cuisine,country:country,foodpreference:foodpreference,sort:sort,url:url},
             success:function(data){
                 $('.filter_products').html(data);
             }
