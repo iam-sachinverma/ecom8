@@ -16,6 +16,7 @@ class InstallCommand extends Command
      */
     protected $signature = 'breeze:install {stack=blade : The development stack that should be installed (blade,react,vue)}
                             {--inertia : Indicate that the Vue Inertia stack should be installed (Deprecated)}
+                            {--pest : Indicate that Pest should be installed }
                             {--composer=global : Absolute path to the Composer binary which should be used to install packages}';
 
     /**
@@ -44,7 +45,7 @@ class InstallCommand extends Command
         $this->updateNodePackages(function ($packages) {
             return [
                 '@tailwindcss/forms' => '^0.2.1',
-                'alpinejs' => '^2.7.3',
+                'alpinejs' => '^3.4.2',
                 'autoprefixer' => '^10.1.0',
                 'postcss' => '^8.2.1',
                 'postcss-import' => '^12.0.1',
@@ -76,7 +77,7 @@ class InstallCommand extends Command
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/default/App/View/Components', app_path('View/Components'));
 
         // Tests...
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/default/tests/Feature', base_path('tests/Feature'));
+        $this->installTests();
 
         // Routes...
         copy(__DIR__.'/../../stubs/default/routes/web.php', base_path('routes/web.php'));
@@ -95,6 +96,26 @@ class InstallCommand extends Command
 
         $this->info('Breeze scaffolding installed successfully.');
         $this->comment('Please execute the "npm install && npm run dev" command to build your assets.');
+    }
+
+    /**
+     * Install Breeze's tests.
+     *
+     * @return void
+     */
+    protected function installTests()
+    {
+        (new Filesystem)->ensureDirectoryExists(base_path('tests/Feature/Auth'));
+
+        if ($this->option('pest')) {
+            $this->requireComposerPackages('pestphp/pest:^1.16', 'pestphp/pest-plugin-laravel:^1.1');
+
+            (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/default/pest-tests/Feature', base_path('tests/Feature/Auth'));
+            (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/default/pest-tests/Unit', base_path('tests/Unit'));
+            (new Filesystem)->copy(__DIR__.'/../../stubs/default/pest-tests/Pest.php', base_path('tests/Pest.php'));
+        } else {
+            (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/default/tests/Feature', base_path('tests/Feature/Auth'));
+        }
     }
 
     /**
@@ -150,7 +171,7 @@ class InstallCommand extends Command
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/inertia-vue/resources/js/Pages', resource_path('js/Pages'));
 
         // Tests...
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/default/tests/Feature', base_path('tests/Feature'));
+        $this->installTests();
 
         // Routes...
         copy(__DIR__.'/../../stubs/inertia-common/routes/web.php', base_path('routes/web.php'));
@@ -227,7 +248,7 @@ class InstallCommand extends Command
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/inertia-react/resources/js/Pages', resource_path('js/Pages'));
 
         // Tests...
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/default/tests/Feature', base_path('tests/Feature'));
+        $this->installTests();
 
         // Routes...
         copy(__DIR__.'/../../stubs/inertia-common/routes/web.php', base_path('routes/web.php'));

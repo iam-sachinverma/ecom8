@@ -15,6 +15,7 @@ use App\Models\User;
 use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\Brand;
+use App\Models\Rating;
 use App\Models\DeliveryAddress;
 use Session;
 use Auth;
@@ -139,8 +140,6 @@ class ProductsController extends Controller
                 // Brand Filter
                 $brandArray = Brand::select('name')->where('status',1)->pluck('name');
 
-
-
                 $page_name = "listing";
                 // SEO
                 $meta_title = $categoryDetails['catDetails']['meta_title'];
@@ -170,13 +169,29 @@ class ProductsController extends Controller
         
         $relatedProducts = Product::with('brand')->where('category_id',$productDetails['category']['id'])->where('id','!=',$id)->where('status',1)->limit(3)->inRandomOrder()->get()->toArray();
         
+        // Get All Rating
+        $ratings = Rating::with('user')->where('status',1)->where('product_id',$id)
+        ->orderBy('id','Desc')->get()->toArray();
+       
+        // Average Rating
+        $ratingsSum = Rating::where('status',1)->where('product_id',$id)->sum('rating');
+        $ratingsCount = Rating::where('status',1)->where('product_id',$id)->count();
+
+        if($ratingsCount>0){
+            $avgRating = round($ratingsSum/$ratingsCount,2);
+            $avgStarRating = round($ratingsSum/$ratingsCount);
+        }else{
+            $avgRating = 0;
+            $avgStarRating = 0;
+        }
+        
         // SEO
         $meta_title = $productDetails['meta_title'];
         $meta_description = $productDetails['meta_description'];
         $meta_keywords = $productDetails['meta_keywords'];
 
         return view('front.products.detail')->with(compact('page_name','productDetails','relatedProducts',
-         'meta_title','meta_description','meta_keywords'));
+         'meta_title','meta_description','meta_keywords','ratings','avgRating','avgStarRating'));
     }
 
     public function getProductPrice(Request $request){

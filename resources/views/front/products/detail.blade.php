@@ -1,6 +1,52 @@
 @extends('layouts.front_layout.front_layout')
 @section('content')
 
+<style>
+	.rate {
+    border-bottom-right-radius: 12px;
+    border-bottom-left-radius: 12px
+}
+
+.rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center
+}
+
+.rating>input {
+    display: none
+}
+
+.rating>label {
+    position: relative;
+    width: 1em;
+    font-size: 30px;
+    font-weight: 300;
+    color: #FFD600;
+    cursor: pointer
+}
+
+.rating>label::before {
+    content: "\2605";
+    position: absolute;
+    opacity: 0
+}
+
+.rating>label:hover:before,
+.rating>label:hover~label:before {
+    opacity: 1 !important
+}
+
+.rating>input:checked~label:before {
+    opacity: 1
+}
+
+.rating:hover>input:checked~label:before {
+    opacity: 0.4
+}
+
+</style>
+
 <header class="app-header onlight fixed-top shadow-sm"><!--  Remove dark text in i tag  -->
 
 	<a href="02.page-index-b.html#offcanvas_left_123" data-bs-toggle="offcanvas" role="button" class="btn-header">
@@ -47,7 +93,17 @@
 			<span class="brand badge bg-info bg-gradient mb-1 rounded-0">{{ $productDetails['brand']['name'] }}</span>
 		</div>
 		<div class="Detailname">
-			<h1 class="fs-5 fw-normal">{{ $productDetails['product_name'] }}</h1>	
+			<h1 class="fs-5 fw-normal">{{ $productDetails['product_name'] }}</h1>
+			<!-- Average Rating -->
+			@if($avgStarRating>0)
+			 <div>
+				<?php
+				$count=1;
+				while($count<=$avgRating) { ?>
+					<span>	&#11088;</span>
+				<?php $count++; } ?> <small class="text-muted ">({{$avgRating }})</small>  
+			 </div>
+			@endif	
 		</div>
 		<div class="price-wrap">
 			<span class="h6 getAttrPrice fs-5">
@@ -164,12 +220,69 @@
 
 	<hr class="divider">
 
+
+	<section class="rating_and_review mt-2">
+		<div class="accordion" id="accordionExample">
+			<div class="accordion-item">
+				<h2 class="accordion-header" id="headingOne">
+				<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+					Rating and Review
+				</button>
+				</h2>
+				<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+				<div class="accordion-body">
+					<!-- Rating Form -->
+					<form method="post" action="{{ url('/add-rating') }}" name="ratingForm" id="ratingForm">@csrf 
+						<input type="hidden" name="product_id" value="{{ $productDetails['id'] }}">
+					    <div class="rating"> 
+				          <input type="radio" name="rating" value="5" id="5"><label for="5">☆</label> 
+				          <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label> 
+				          <input type="radio" name="rating" value="3" id="3"><label for="3">☆</label> 
+				          <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label> 
+				          <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label> 
+		            	</div>
+
+						<div class="form-group">
+							<label for="review">Your Review</label>
+							<textarea name="review" id="review" require></textarea>
+						</div>
+						<div>&nbsp;</div>
+						<div class="form-group">
+							<input type="submit" name="submit">
+						</div>
+					</form>
+				</div>
+				</div>
+			</div>
+		</div>
+
+		<figure class="figure">
+		 <h5>User Review</h5>
+         @if(count($ratings)>0)
+		  @foreach($ratings as $rating)
+		    <div>
+			 <?php
+              $count=1;
+			  while($count<=$rating['rating']) { ?>
+                <span>	&#11088;</span>
+			  <?php $count++; } ?>
+			 <p> {{ $rating['review'] }}</p>
+             <p>by {{ $rating['user']['name'] }} </p>
+			 <p>on {{ date('d-M-Y', strtotime($rating['created_at'])) }}</p>
+			</div>
+          @endforeach
+		 @else
+           No reviews available
+		 @endif
+		</figure>
+	</section>
+
 	<section class="similarProduct">
 		<h5 class="title-section">You might also like</h5>
 		<div class="p-3 scroll-horizontal">
 			@foreach($relatedProducts as $product)
 				<div class="item">
-					<div href="#" class="product">
+					<div class="product">
 						<a href="{{ url('product/'.$product['id']) }}" class="img-wrap rounded-0">
 							@if(isset($product['main_image']))
 							 <?php $product_image_path = 'images/product_images/small/'.$product['main_image']; ?>

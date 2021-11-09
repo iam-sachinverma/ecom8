@@ -49,14 +49,18 @@
                         
                         <div class="rating-wrap my-2">
                             <ul class="rating-stars">
-                                <li style="width:100%;" class="stars-active">
-                                        <img src="images/front_images/misc/stars-active.svg" height="12" alt="stars">
-                                </li>
-                                <li>
-                                        <img src="images/front_images/misc/stars-disable.svg" height="12" alt="stars">
-                                </li>
+                              
+                              <!-- Average Rating -->
+                              <div>
+                                  <?php
+                                  $count=1;
+                                  while($count <= averageRating($item['id'])) { ?>
+                                  <small>&#11088;</small>
+                                  <?php $count++; } ?>
+                              </div>
+              
                             </ul>
-                            <small class="label-rating text-muted">9/10</small>
+
                         </div> <!-- rating-wrap end// -->
                         
                         <div class="price my-2" style="font-weight: 450; font-size: 16px;">
@@ -104,14 +108,17 @@
                         
                         <div class="rating-wrap my-2">
                             <ul class="rating-stars">
-                                <li style="width:100%;" class="stars-active">
-                                        <img src="images/front_images/misc/stars-active.svg" height="12" alt="stars">
-                                </li>
-                                <li>
-                                        <img src="images/front_images/misc/stars-disable.svg" height="12" alt="stars">
-                                </li>
+                              
+                                <!-- Average Rating -->
+                                <div>
+                                    <?php
+                                    $count=1;
+                                    while($count <= averageRating($product['id'])) { ?>
+                                    <small>&#11088;</small>
+                                    <?php $count++; } ?>
+                                </div>
+                
                             </ul>
-                            <small class="label-rating text-muted">9/10</small>
                         </div> <!-- rating-wrap end// -->
                        
                         <div class="price my-2" style="font-weight: 450; font-size: 16px;">

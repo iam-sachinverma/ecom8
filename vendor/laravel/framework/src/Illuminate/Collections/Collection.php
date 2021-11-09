@@ -4,11 +4,12 @@ namespace Illuminate\Support;
 
 use ArrayAccess;
 use ArrayIterator;
+use Illuminate\Contracts\Support\CanBeEscapedWhenCastToString;
 use Illuminate\Support\Traits\EnumeratesValues;
 use Illuminate\Support\Traits\Macroable;
 use stdClass;
 
-class Collection implements ArrayAccess, Enumerable
+class Collection implements ArrayAccess, CanBeEscapedWhenCastToString, Enumerable
 {
     use EnumeratesValues, Macroable;
 
@@ -502,6 +503,29 @@ class Collection implements ArrayAccess, Enumerable
     }
 
     /**
+     * Determine if any of the keys exist in the collection.
+     *
+     * @param  mixed  $key
+     * @return bool
+     */
+    public function hasAny($key)
+    {
+        if ($this->isEmpty()) {
+            return false;
+        }
+
+        $keys = is_array($key) ? $key : func_get_args();
+
+        foreach ($keys as $value) {
+            if ($this->has($value)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Concatenate values of a given key as a string.
      *
      * @param  string  $value
@@ -827,7 +851,7 @@ class Collection implements ArrayAccess, Enumerable
     /**
      * Push one or more items onto the end of the collection.
      *
-     * @param  mixed  $values [optional]
+     * @param  mixed  $values
      * @return $this
      */
     public function push(...$values)
@@ -1146,13 +1170,15 @@ class Collection implements ArrayAccess, Enumerable
             ? $this->operatorForWhere(...func_get_args())
             : $key;
 
-        $items = $this->when($filter)->filter($filter);
+        $placeholder = new stdClass();
 
-        if ($items->isEmpty()) {
+        $item = $this->first($filter, $placeholder);
+
+        if ($item === $placeholder) {
             throw new ItemNotFoundException;
         }
 
-        return $items->first();
+        return $item;
     }
 
     /**
@@ -1407,6 +1433,28 @@ class Collection implements ArrayAccess, Enumerable
         $this->items = $this->map($callback)->all();
 
         return $this;
+    }
+
+    /**
+     * Return only unique items from the collection array.
+     *
+     * @param  string|callable|null  $key
+     * @param  bool  $strict
+     * @return static
+     */
+    public function unique($key = null, $strict = false)
+    {
+        $callback = $this->valueRetriever($key);
+
+        $exists = [];
+
+        return $this->reject(function ($item, $key) use ($callback, $strict, &$exists) {
+            if (in_array($id = $callback($item, $key), $exists, $strict)) {
+                return true;
+            }
+
+            $exists[] = $id;
+        });
     }
 
     /**

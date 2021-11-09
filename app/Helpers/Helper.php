@@ -2,6 +2,7 @@
 use App\Models\Cart;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Rating;
 
 
 function totalCartItems(){
@@ -31,6 +32,21 @@ function getDiscountedPrice($product_id){
         $getDiscountedPrice = 0;
     }
     return $getDiscountedPrice;
+}
+
+function averageRating($product_id){
+    $ratingsSum = Rating::where('status',1)->where('product_id',$product_id)->sum('rating');
+    $ratingsCount = Rating::where('status',1)->where('product_id',$product_id)->count();
+
+    if($ratingsCount>0){
+        $avgRating = round($ratingsSum/$ratingsCount,2);
+        $averageRating = round($ratingsSum/$ratingsCount);
+    }else{
+        $avgRating = 0;
+        $averageRating = 0;
+    }
+    
+    return $averageRating;
 }
 
 

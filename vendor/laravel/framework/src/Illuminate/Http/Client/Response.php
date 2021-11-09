@@ -107,9 +107,7 @@ class Response implements ArrayAccess
      */
     public function headers()
     {
-        return collect($this->response->getHeaders())->mapWithKeys(function ($v, $k) {
-            return [$k => $v];
-        })->all();
+        return $this->response->getHeaders();
     }
 
     /**
@@ -195,7 +193,7 @@ class Response implements ArrayAccess
     /**
      * Execute the given callback if there was a server or client error.
      *
-     * @param  \Closure|callable $callback
+     * @param  callable  $callback
      * @return $this
      */
     public function onError(callable $callback)
@@ -282,6 +280,19 @@ class Response implements ArrayAccess
         }
 
         return $this;
+    }
+
+    /**
+     * Throw an exception if a server or client error occurred and the given condition evaluates to true.
+     *
+     * @param  bool  $condition
+     * @return $this
+     *
+     * @throws \Illuminate\Http\Client\RequestException
+     */
+    public function throwIf($condition)
+    {
+        return $condition ? $this->throw() : $this;
     }
 
     /**

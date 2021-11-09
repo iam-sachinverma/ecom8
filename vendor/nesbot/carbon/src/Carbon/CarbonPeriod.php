@@ -8,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Carbon;
 
 use Carbon\Exceptions\InvalidCastException;
@@ -1310,6 +1311,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
      *
      * @return bool
      */
+    #[ReturnTypeWillChange]
     public function valid()
     {
         return $this->validateCurrentDate() === true;
@@ -1320,6 +1322,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
      *
      * @return int|null
      */
+    #[ReturnTypeWillChange]
     public function key()
     {
         return $this->valid()
@@ -1332,6 +1335,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
      *
      * @return CarbonInterface|null
      */
+    #[ReturnTypeWillChange]
     public function current()
     {
         return $this->valid()
@@ -1346,6 +1350,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
      *
      * @return void
      */
+    #[ReturnTypeWillChange]
     public function next()
     {
         if ($this->current === null) {
@@ -1372,6 +1377,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
      *
      * @return void
      */
+    #[ReturnTypeWillChange]
     public function rewind()
     {
         $this->key = 0;
@@ -1545,6 +1551,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
      *
      * @return int
      */
+    #[ReturnTypeWillChange]
     public function count()
     {
         return \count($this->toArray());
@@ -1620,14 +1627,14 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
                 return $this->setStartDate($first, $second);
 
             case 'sinceNow':
-                return $this->setStartDate(new Carbon, $first);
+                return $this->setStartDate(new Carbon(), $first);
 
             case 'end':
             case 'until':
                 return $this->setEndDate($first, $second);
 
             case 'untilNow':
-                return $this->setEndDate(new Carbon, $first);
+                return $this->setEndDate(new Carbon(), $first);
 
             case 'dates':
             case 'between':
@@ -2398,11 +2405,7 @@ class CarbonPeriod implements Iterator, Countable, JsonSerializable
         }
 
         // Check after the first rewind to avoid repeating the initial validation.
-        if ($this->validationResult !== null) {
-            return $this->validationResult;
-        }
-
-        return $this->validationResult = $this->checkFilters();
+        return $this->validationResult ?? ($this->validationResult = $this->checkFilters());
     }
 
     /**

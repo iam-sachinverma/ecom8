@@ -29,10 +29,10 @@
                         <div class="rating-wrap mb-2">
                             <ul class="rating-stars">
                                 <li style="width:100%;" class="stars-active">
-                                        <img src="images/front_images/misc/stars-active.svg" height="16" alt="stars">
+                                    <img src="images/front_images/misc/stars-active.svg" height="16" alt="stars">
                                 </li>
                                 <li>
-                                        <img src="images/front_images/misc/stars-disable.svg" height="16" alt="stars">
+                                    <img src="images/front_images/misc/stars-disable.svg" height="16" alt="stars">
                                 </li>
                             </ul>
                             <small class="label-rating text-muted">9/10</small>

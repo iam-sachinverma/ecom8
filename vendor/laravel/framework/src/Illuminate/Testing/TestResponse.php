@@ -155,6 +155,16 @@ class TestResponse implements ArrayAccess
     }
 
     /**
+     * Assert that the response has a 422 status code.
+     *
+     * @return $this
+     */
+    public function assertUnprocessable()
+    {
+        return $this->assertStatus(422);
+    }
+
+    /**
      * Assert that the response has the given status code.
      *
      * @param  int  $status
@@ -263,6 +273,25 @@ EOF;
         if (! is_null($uri)) {
             $this->assertLocation($uri);
         }
+
+        return $this;
+    }
+
+    /**
+     * Assert whether the response is redirecting to a URI that contains the given URI.
+     *
+     * @param  string  $uri
+     * @return $this
+     */
+    public function assertRedirectContains($uri)
+    {
+        PHPUnit::assertTrue(
+            $this->isRedirect(), 'Response status code ['.$this->getStatusCode().'] is not a redirect status code.'
+        );
+
+        PHPUnit::assertTrue(
+            Str::contains($this->headers->get('Location'), $uri), 'Redirect location ['.$this->headers->get('Location').'] does not contain ['.$uri.'].'
+        );
 
         return $this;
     }
@@ -1025,7 +1054,7 @@ EOF;
     /**
      * Assert that the given keys do not have validation errors.
      *
-     * @param  array|null  $keys
+     * @param  string|array|null  $keys
      * @param  string  $errorBag
      * @param  string  $responseKey
      * @return $this
@@ -1068,7 +1097,7 @@ EOF;
     /**
      * Assert that the response has the given validation errors.
      *
-     * @param  array  $errors
+     * @param  string|array|null  $errors
      * @param  string  $errorBag
      * @param  string  $responseKey
      * @return $this
@@ -1327,6 +1356,43 @@ EOF;
     protected function session()
     {
         return app('session.store');
+    }
+
+    /**
+     * Dump the content from the response and end the script.
+     *
+     * @return never
+     */
+    public function dd()
+    {
+        $this->dump();
+
+        exit(1);
+    }
+
+    /**
+     * Dump the headers from the response and end the script.
+     *
+     * @return never
+     */
+    public function ddHeaders()
+    {
+        $this->dumpHeaders();
+
+        exit(1);
+    }
+
+    /**
+     * Dump the session from the response and end the script.
+     *
+     * @param  string|array  $keys
+     * @return never
+     */
+    public function ddSession($keys = [])
+    {
+        $this->dumpSession($keys);
+
+        exit(1);
     }
 
     /**

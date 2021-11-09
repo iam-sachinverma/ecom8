@@ -104,8 +104,12 @@ Route::prefix('/admin')->namespace('App\\Http\\Controllers\\Admin')->group(funct
         Route::match(['get','post'],'add-edit-cms-page/{id?}','CmsController@addEditCmsPage');
         Route::get('delete-page/{id}','CmsController@deleteCmsPage');
 
-        // Cart Settings
+        // Cart Other Settings
         Route::match(['get','post'],'update-other-settings','CartController@UpdateOtherSettings');
+
+        // Rating Route
+        Route::get('ratings','RatingsController@ratings');
+        Route::post('update-rating-status','RatingsController@updateRatingStatus');
 
     }); 
 
@@ -174,6 +178,9 @@ Route::namespace('App\\Http\\Controllers\\Front')->group(function(){
 
     // Contact Us Page
     Route::match(['GET','POST'],'/contact','CmsController@contact');    
+
+    // Rating & Review
+    Route::match(['GET','POST'],'/add-rating','RatingsController@addRating'); 
 
     // Protected Route
     Route::group(['middleware'=>['auth']],function(){
