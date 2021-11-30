@@ -31,7 +31,7 @@ class Product extends Model
         //Product Filters
         $productFilters['cuisineArray'] = array('Italian','Indian','Thai','English','Mediterranean');
         $productFilters['foodpreferenceArray'] = array('Vegetarian','Non Vegetarian','Contain Egg','Vegan');
-        $productFilters['countryArray'] = array('America','England','Australia','Belgium','Canada');
+        $productFilters['countryArray'] = array('America','Indian','Australia','Belgium','Canada');
         return $productFilters;
     }
 

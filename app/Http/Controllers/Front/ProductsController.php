@@ -162,9 +162,7 @@ class ProductsController extends Controller
         $productDetails = Product::with(['brand','category','attributes'=>function($query){
             $query->where('status',1);
         },
-        'images'=>function($query){
-            $query->where('status',1);
-        }])->find($id)->toArray();
+        'images'])->find($id)->toArray();
         // dd($productDetails); die;
         
         $relatedProducts = Product::with('brand')->where('category_id',$productDetails['category']['id'])->where('id','!=',$id)->where('status',1)->limit(3)->inRandomOrder()->get()->toArray();
@@ -209,7 +207,7 @@ class ProductsController extends Controller
            $data = $request->all();
             // echo "<pre>"; print_r($data); die;
 
-            if($data['quantity']<=0 && $data['quantity']="" ){
+            if($data['quantity']<=0 || $data['quantity']="" ){
                 $data['quantity']=1;
             }
 
@@ -438,9 +436,9 @@ class ProductsController extends Controller
                     if($couponDetails->amount_type=="Fixed"){
                         $couponAmount = $couponDetails->amount;
                     }else{
-                        $couponAmount = $total_amount * ($couponDetails->amount/100);
+                        $couponAmount = number_format($total_amount * ($couponDetails->amount/100),2);
                     }     
-                    $grand_total = $total_amount - $couponAmount;
+                    $grand_total = number_format($total_amount - $couponAmount,2);
                     
 
                     // Add Coupon Code & Amount in Session

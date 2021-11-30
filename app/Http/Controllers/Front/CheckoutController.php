@@ -71,8 +71,8 @@ class CheckoutController extends Controller
             }
             
         // Website Security
-
-
+ 
+       
         // Total Price and Total Weight
         $total_price = 0;
         $total_weight = 0;
@@ -96,6 +96,14 @@ class CheckoutController extends Controller
             $error_message = "Maximum cart order of ".$otherSettings['max_cart_value'];
             Session::put('error_message',$error_message);
             return redirect()->back();
+        }
+
+        $deliveryAddresses = DeliveryAddress::deliveryAddresses();
+
+        if(count($deliveryAddresses)==0){
+            // $message = "Shopping cart is empty! Please add products to checkout";
+            // Session::put('error_message',$message);
+            return redirect('add-edit-delivery-address');
         }
 
         // Get Delivery Addresses

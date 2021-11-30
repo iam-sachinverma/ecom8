@@ -191,11 +191,6 @@ Route::namespace('App\\Http\\Controllers\\Front')->group(function(){
             // User MY Account or Profile Page
             Route::match(['GET','POST'],'/','UsersController@account');
 
-            // Users Order
-            Route::get('/orders','OrdersController@orders');
-            Route::get('/orders{id}','OrdersController@orderDetails');
-
-
             // User Profile Edit
             Route::match(['GET','POST'],'/edit-profile','UsersController@edit_profile');
             
@@ -212,6 +207,15 @@ Route::namespace('App\\Http\\Controllers\\Front')->group(function(){
                 Route::get('/address-book','UsersController@addressBook');
 
         });
+
+        // Users Order
+        Route::get('/orders','OrdersController@orders');
+        Route::get('/orders/{id}','OrdersController@orderDetails');
+  
+         // User Order Cancel
+         Route::match(['GET','POST'],'/orders/{id}/cancel','OrdersController@orderCancel');
+
+
 
         // Apply Coupon
         Route::post('/apply-coupon','ProductsController@applyCoupon');
@@ -233,6 +237,15 @@ Route::namespace('App\\Http\\Controllers\\Front')->group(function(){
         Route::get('/delete-delivery-address/{id}','DeliveryAddressController@deleteDeliveryAddress');
 
         Route::post('autofill-address','DeliveryAddressController@autofillAddress');
+        
+        // Update Wishlist 
+        Route::post('/update-wishlist','WishlistsController@updateWishlist');
+
+        // User Wishlist Products
+        Route::get('/wishlist','WishlistsController@wishlist');
+
+        // Delete Wishlist item
+        Route::post('/delete-wishlist-item','WishlistsController@deleteWishlistItem');
 
 
     });

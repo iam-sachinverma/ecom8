@@ -31,6 +31,15 @@ class Category extends Model
           $query->select('id','parent_id','category_name','url')->where('status',1);
         }])->where('url',$url)->first()->toArray();
         //dd($catDetails); die;
+
+        // Breadcrumbs
+        if($catDetails['parent_id']==0){
+            $breadcrumbs = '<a href="'.url($catDetails['url']).'" >'.$catDetails['category_name'].'</a>';
+        }else{
+            $parentCatgeory = Category::select('category_name','url')->where('id',$catDetails['parent_id'])->first()->toArray();
+            $breadcrumbs = '<a href="'.url($parentCatgeory['url']).'" >'.$parentCatgeory['category_name'].'</a>
+                            &nbsp;&nbsp;<a href="'.url($catDetails['url']).'" >'.$catDetails['category_name'].'</a>';
+        }
     
         $catIds = array();
         $catIds[] = $catDetails['id'];
@@ -38,6 +47,6 @@ class Category extends Model
             $catIds[] = $subcat['id'];
         }
         //dd($catIds); die;
-        return array('catIds'=>$catIds,'catDetails'=>$catDetails);
+        return array('catIds'=>$catIds,'catDetails'=>$catDetails,'breadcrumbs'=>$breadcrumbs);
     }
 }

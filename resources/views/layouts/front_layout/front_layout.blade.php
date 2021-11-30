@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 
+<!-- Viewport -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
 @if(!empty($meta_title))
     <title>{{  $meta_title }}</title>
 @else
@@ -21,22 +25,14 @@
     <meta name="keywords" content="gourment food, pasta, soup, ecommerce, shop online, "> 
 @endif
 
-<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, shrink-to-fit=no">
-<meta name=”theme-color” content=”#0d6efd>
-<meta name="apple-mobile-web-app-capable" content="yes"> 
-<meta name="csrf-token" content="{{ csrf_token() }}">
-
-<link href="{{ asset('images/front_images/favicon.ico') }}" rel="shortcut icon" type="image/x-icon">
-
-<!-- Bootstrap -->
-<link href="{{ url('css/front_css/bootstrap.css') }}" rel="stylesheet" type="text/css"/>
-
-<!-- custom style -->
-<link href="{{ url('css/front_css/ui.css') }}" rel="stylesheet" type="text/css"/>
-
-<!-- Fonticon -->
-<link href="{{ url('fonts/front/material-icon/css/round.css') }}" rel="stylesheet" type="text/css" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+<!-- Vendor Styles including: Font Icons, Plugins, etc.-->
+<link rel="stylesheet" media="screen" href="{{ url('plugins/front/simplebar/dist/simplebar.min.css') }}"/>
+<link rel="stylesheet" media="screen" href="{{ url('plugins/front/tiny-slider/dist/tiny-slider.css') }}"/>
+<link rel="stylesheet" media="screen" href="{{ url('plugins/front/drift-zoom/dist/drift-basic.min.css') }}"/>
+<link rel="stylesheet" media="screen" href="{{ url('plugins/front/lightgallery.js/dist/css/lightgallery.min.css') }}"/>
+<!-- Main Theme Styles + Bootstrap-->
+<link rel="stylesheet" media="screen" href="{{ url('css/front_css/theme.min.css') }}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css">
 
 <!-- Jquery Validate Style  -->
 <style>
@@ -47,42 +43,79 @@
 </style>
 
 </head>
-<body>
+<body class="handheld-toolbar-enabled">
 
-<!-- Preloader-->
-<div class="preloader" id="preloader">
-    <div class="spinner-grow" role="status">
-	  <span class="visually-hidden">Loading...</span>
-	</div>
-</div>
-<!-- Preloader //end -->
+  
+  <main class="page-wrapper">
 
-@include('layouts.front_layout.front_header')
+    @include('layouts.front_layout.front_header')
 
-@yield('content')
+    @yield('content')
 
-@include('layouts.front_layout.front_sidebar')
+    @include('layouts.front_layout.front_sidebar')
 
-@include('layouts.front_layout.front_footer')
+  </main>
 
-<!-- jQuery -->
-<script src="{{ url('js/front_js/jquery.js') }}" type="text/javascript"></script>
-{{-- <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script> --}}
-<script src="{{ url('js/front_js/jquery.validate.js') }}" type="text/javascript"></script>
+    @include('layouts.front_layout.front_footer')
 
-<!-- Bootstrap 5 JS -->
-{{-- <script src="{{ url('js/front_js/bootstrap.bundle.js') }}" type="text/javascript"></script>  --}}
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-<!-- custom javascript -->
-<script src="{{ url('js/front_js/front_script.js') }}" type="text/javascript"></script>
-<script src="{{ url('js/front_js/script.js') }}" type="text/javascript"></script>
+    <!-- Toolbar for handheld devices (Default)-->
+    <div class="handheld-toolbar">
+        <div class="d-table table-layout-fixed w-100">
+            
+            @if(isset($page_name) && $page_name=="listing")
+            <a class="d-table-cell handheld-toolbar-item" data-bs-toggle="offcanvas" data-bs-target="#shop-sidebar">
+              <span class="handheld-toolbar-icon"><i class="bi bi-sliders"></i></span>
+              <span class="handheld-toolbar-label">Filters</span>
+            </a>
+            @endif 
 
-<!-- plugin: fancybox  -->
-<link href="{{ url('plugins/front/fancybox/fancybox.min.css') }}" type="text/css" rel="stylesheet">
-<script src="{{ url('plugins/front/fancybox/fancybox.min.js') }}" type="text/javascript"></script>
+            <a class="d-table-cell handheld-toolbar-item" href="{{ url('/wishlist') }}">
+              <span class="handheld-toolbar-icon"><i class="bi bi-heart"></i></span>
+              <span class="handheld-toolbar-label">Wishlist</span>
+            </a>
 
-<!-- PWA -->
-<script src="{{ url('js/front_js/pwa.js') }}"></script>
+            <a class="d-table-cell handheld-toolbar-item" href="{{ url('/orders') }}">
+              <span class="handheld-toolbar-icon"><i class="bi bi-grid-3x2-gap"></i></span>
+              <span class="handheld-toolbar-label">Categories</span>
+            </a>
+            
+            <a class="d-table-cell handheld-toolbar-item" href="{{ url('/cart') }}">
+                <span class="handheld-toolbar-icon">
+                 <i class="bi bi-cart2"></i>
+                 <span class="badge bg-primary rounded-pill ms-1">{{ totalCartItems() }}</span>
+                </span>
+                <span class="handheld-toolbar-label">$265.00</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Back To Top Button-->
+    <a class="btn-scroll-top" href="#top" data-scroll data-fixed-element>
+        <span class="btn-scroll-top-tooltip text-muted fs-sm me-2">Top</span>
+        <i class="btn-scroll-top-icon ci-arrow-up">   </i>
+    </a>
+
+ <!-- Main theme script-->
+ <script src="{{ url('js/front_js/jquery.js') }}"></script>
+ <script src="{{ url('js/front_js/jquery.validate.js') }}"></script>
+ 
+ <!-- Vendor scrits: js libraries and plugins-->
+ <script src="{{ url('plugins/front/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+ <script src="{{ url('plugins/front/simplebar/dist/simplebar.min.js') }}"></script>
+ <script src="{{ url('plugins/front/tiny-slider/dist/min/tiny-slider.js') }}"></script>
+ <script src="{{ url('plugins/front/smooth-scroll/dist/smooth-scroll.polyfills.min.js') }}"></script>
+ <script src="{{ url('plugins/front/smooth-scroll/dist/smooth-scroll.polyfills.min.js') }}"></script>
+ <script src="{{ url('plugins/front/drift-zoom/dist/Drift.min.js') }}"></script>
+ <script src="{{ url('plugins/front/lightgallery.js/dist/js/lightgallery.min.js') }}"></script>
+ <script src="{{ url('plugins/front/lg-video.js/dist/lg-video.min.js') }}"></script>
+
+ <!-- Vendor Fancy Box -->
+ <link rel="stylesheet" href="{{ url('plugins/front/fancybox/fancybox.min.css') }}">
+ <script src="{{ url('plugins/front/fancybox/fancybox.min.js') }}" type="text/javascript"></script>
+ 
+ <!-- Main theme script-->
+ <script src="{{ url('js/front_js/front_script.js') }}"></script>
+ <script src="{{ url('js/front_js/theme.min.js') }}"></script>
 
 </body>
 </html>

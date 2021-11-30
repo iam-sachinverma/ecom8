@@ -211,8 +211,13 @@
                     
                     @foreach($orderLog as $log)
                      <strong>{{ $log['order_status'] }}</strong><br>
-                     {{ date('j F, Y, g:i a', strtotime($log['created_at'])) }}
-                     <hr>
+                     <small>{{ date('j F, Y, g:i a', strtotime($log['created_at'])) }}</small>
+                     
+                      @if($log['reason']!="") 
+                      &nbsp;&nbsp;&nbsp;  <small> {{ $log['reason'] }} </small> 
+                      @endif
+                      <hr>
+
                     @endforeach
 
                     <div style=" background-color: 	#00FA9A;">

@@ -119,7 +119,9 @@ $(document).ready(function(){
            success:function(resp){
             // alert(resp['save']);
                 if(resp['attribute_discount']>0){
-                    $(".getAttrPrice").html("&#x20B9; "+resp['final_price']+" &nbsp; "+" <small> MRP: <del>Rs."+resp['product_price']+" </del> </small>&nbsp;<code> Save &#x20B9;"+resp['save']+"</code>" );    
+                    $(".getAttrPrice").html('<span class="h3 fw-normal text-accent me-1">&#x20B9;'+resp['final_price']+'&nbsp; <small class="text-muted fs-lg">MRP: </small></span><del class="text-muted fs-lg me-3">&#x20B9;'+resp['product_price']+' </del> <span class="badge bg-success badge-shadow align-middle mt-n2">You Save:&nbsp; &#x20B9;'+resp['save']+' </span>');    
+                                       
+                    // $(".getAttrPrice").html("&#x20B9; "+resp['final_price']+" &nbsp; "+" <small> MRP: <del>Rs."+resp['product_price']+" </del> </small>&nbsp;<code> Save &#x20B9;"+resp['save']+"</code>" );    
                 }else{
                     $(".getAttrPrice").html("MRP:"+"&nbsp;"+" Rs "+resp['product_price']);
                 }  
@@ -323,6 +325,7 @@ $(document).ready(function(){
                     $(".couponAmount").text(0);
                 }
                 if(resp.grand_total>=0){
+                    // alert(resp.grand_total);
                     $(".grand_total").text(resp.grand_total); 
                 }
             },error:function(){
@@ -420,10 +423,10 @@ $(document).ready(function(){
         if(coupon_amount==""){
             coupon_amount = 0;
         }
-        $(".shipping_charges").html("Rs."+shipping_charges);
+        $(".shipping_charges").html("&#8377; "+shipping_charges);
         var grand_total = parseInt(total_price) + parseInt(shipping_charges) - parseInt(coupon_amount);
-        alert(shipping_charges);
-        $(".grand_total").html("Rs."+grand_total);
+        // alert(shipping_charges);
+        $(".grand_total").html("&#8377; "+grand_total);
     });
 
 
@@ -445,5 +448,60 @@ $(document).ready(function(){
         })
     });
 
+    // Wishlist Check
+    $(".userLogin").click(function(){
+        alert("Login to add product in wishlist");
+    });
+
+    // Update Wishlist
+    $(".updateWishlist").click(function(){
+        var product_id = $(this).data('productid');
+        $.ajax({
+            type:"post",
+            url:"/update-wishlist",
+            data:{"product_id":product_id},
+            success:function(resp){
+                if(resp.action=='add'){
+                    $('button[data-productid='+product_id+']').html('<i class="bi bi-heart-fill"></i>');
+                    alert("PRoduct add in wishlist");
+                }else if(resp.action=='remove'){
+                    $('button[data-productid='+product_id+']').html(' <i class="bi bi-heart"></i>');
+                    alert("PRoduct remove from wishlist");
+                }              
+            },error:function(){
+                alert("Error");
+            }
+        });
+    });
+
+    // Delete Wishlistitem
+    $(document).on('click','.wishlistItemDelete',function(){
+        var wishlistid = $(this).data('wishlistid');
+        $.ajax({
+            type:'post',
+            url:'/delete-wishlist-item',
+            data:{'wishlistid':wishlistid},
+            success:function(resp){
+                $('.totalWishlistItems').html(resp.totalWishlistItems);
+                $('#AppendWishlistItems').html(resp.view);
+            },error:function(){
+                alert("Error");
+            }
+        });
+    });
+
+    // Orders
+    // Cancel Order
+    $(document).on('click','.btnCancelOrder',function(){
+        var reason = $("#cancelReason").val();
+        if(reason==""){
+            alert("Please select reason for cancelling the order");
+            return false;
+        }
+        var result = confirm("Want to cancel this order ?");
+        if(!result){
+            return false;
+        }
+    });
     
 });
