@@ -22,7 +22,7 @@ The front website includes the home page, listing/category page, product detail 
 - Create CMS / Dynamic Pages
 - Contact Page
 - SEO Tags
-- Webhook API’s - Follow Laravel API Series
+- Webhook API’s
 - Laravel API Authentication with Passport Package - Follow Laravel API Series
 - Sub Admins / Admins Roles / Permissions
 - Show Product Video at Detail Page
