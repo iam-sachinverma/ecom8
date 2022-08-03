@@ -11,8 +11,6 @@ The front website includes the home page, listing/category page, product detail 
 ## Features like below:-
 
 - Cash on Delivery
-- Paypal Payment Gateway
-- Payumoney Payment Gateway
 - Products Stock Management / Reduce Stock @ Order Placement
 - Check Pincode Availability 
 - Website Security Points: Prevent Sold out products / disabled products/attributes to order
@@ -22,19 +20,13 @@ The front website includes the home page, listing/category page, product detail 
 - Create CMS / Dynamic Pages
 - Contact Page
 - SEO Tags
-- Webhook API’s
-- Laravel API Authentication with Passport Package - Follow Laravel API Series
-- Sub Admins / Admins Roles / Permissions
 - Show Product Video at Detail Page
 - Search Products by Category Name
 - Min / Max Cart Value / Order Value
 - Brands Filter
 - Currency Converter
 - Product Reviews and Ratings
-- Social Share Script
 - Timezone / Date / Time Settings
-- Charts / Graphs / Reports
-- Live Chat Support
 
 ## Security Vulnerabilities
 
